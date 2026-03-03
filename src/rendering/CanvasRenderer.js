@@ -8,20 +8,12 @@ export class CanvasRenderer {
 
   render(rootView) {
     this.clear()
-
-    const widthSpec = makeMeasureSpec(
-      this.canvas.width,
-      MeasureSpecMode.EXACTLY
-    )
-
-    const heightSpec = makeMeasureSpec(
-      this.canvas.height,
-      MeasureSpecMode.EXACTLY
-    )
-
+    const widthSpec = makeMeasureSpec(this.canvas.width, MeasureSpecMode.EXACTLY)
+    const heightSpec = makeMeasureSpec(this.canvas.height, MeasureSpecMode.EXACTLY)
+    
     rootView.measure(widthSpec, heightSpec)
-    rootView.layout(0, 0, rootView.measuredWidth, rootView.measuredHeight)
-
+    rootView.layout(0, 0, this.canvas.width, this.canvas.height)
+    
     rootView.draw(this.ctx)
   }
 

@@ -16,53 +16,51 @@ export class LinearLayout extends ViewGroup {
 
     this.children.forEach(child => {
       const childWidthSpec = makeMeasureSpec(
-        parentWidth,
-        MeasureSpecMode.AT_MOST
+        this.orientation === 'vertical' ? parentWidth : 0,
+        this.orientation === 'vertical' ? MeasureSpecMode.AT_MOST : MeasureSpecMode.UNSPECIFIED
       )
 
       const childHeightSpec = makeMeasureSpec(
-        parentHeight,
-        MeasureSpecMode.AT_MOST
+        this.orientation === 'vertical' ? 0 : parentHeight,
+        this.orientation === 'vertical' ? MeasureSpecMode.UNSPECIFIED : MeasureSpecMode.AT_MOST
       )
 
       child.measure(childWidthSpec, childHeightSpec)
 
       if (this.orientation === 'vertical') {
-        totalHeight += child.measuredHeight
-        totalWidth = Math.max(totalWidth, child.measuredWidth)
+        totalHeight += child.measuredHeight + (child.margin?.top || 0) + (child.margin?.bottom || 0)
+        totalWidth = Math.max(totalWidth, child.measuredWidth + (child.margin?.left || 0) + (child.margin?.right || 0))
       } else {
-        totalWidth += child.measuredWidth
-        totalHeight = Math.max(totalHeight, child.measuredHeight)
+        totalWidth += child.measuredWidth + (child.margin?.left || 0) + (child.margin?.right || 0)
+        totalHeight = Math.max(totalHeight, child.measuredHeight + (child.margin?.top || 0) + (child.margin?.bottom || 0))
       }
     })
 
-    this.measuredWidth = totalWidth
-    this.measuredHeight = totalHeight
+    totalWidth += (this.padding?.left || 0) + (this.padding?.right || 0)
+    totalHeight += (this.padding?.top || 0) + (this.padding?.bottom || 0)
+
+    this.measuredWidth = this.resolveSize(totalWidth, widthMeasureSpec.mode, parentWidth, true)
+    this.measuredHeight = this.resolveSize(totalHeight, heightMeasureSpec.mode, parentHeight, false)
   }
 
   layout(l, t, r, b) {
     super.layout(l, t, r, b)
 
-    let offsetX = l
-    let offsetY = t
+    let offsetX = l + (this.padding?.left || 0)
+    let offsetY = t + (this.padding?.top || 0)
 
     this.children.forEach(child => {
+      const left = offsetX + (child.margin?.left || 0)
+      const top = offsetY + (child.margin?.top || 0)
+      const right = left + child.measuredWidth
+      const bottom = top + child.measuredHeight
+
+      child.layout(left, top, right, bottom)
+
       if (this.orientation === 'vertical') {
-        child.layout(
-          l,
-          offsetY,
-          l + child.measuredWidth,
-          offsetY + child.measuredHeight
-        )
-        offsetY += child.measuredHeight
+        offsetY = bottom + (child.margin?.bottom || 0)
       } else {
-        child.layout(
-          offsetX,
-          t,
-          offsetX + child.measuredWidth,
-          t + child.measuredHeight
-        )
-        offsetX += child.measuredWidth
+        offsetX = right + (child.margin?.right || 0)
       }
     })
   }

@@ -12,12 +12,17 @@ export class TextView extends View {
   measure(widthMeasureSpec, heightMeasureSpec) {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
-
     ctx.font = `${this.fontSize}px ${this.fontFamily}`
     const metrics = ctx.measureText(this.text)
-
-    this.measuredWidth = metrics.width
-    this.measuredHeight = this.fontSize * 1.2
+    
+    let desiredWidth = metrics.width
+    let desiredHeight = this.fontSize * 1.2
+    
+    const widthMode = widthMeasureSpec.mode
+    const heightMode = heightMeasureSpec.mode
+    
+    this.measuredWidth = this.resolveSize(desiredWidth, widthMode, widthMeasureSpec.size, true)
+    this.measuredHeight = this.resolveSize(desiredHeight, heightMode, heightMeasureSpec.size, false)
   }
 
   draw(ctx) {
@@ -27,7 +32,10 @@ export class TextView extends View {
     ctx.font = `${this.fontSize}px ${this.fontFamily}`
     ctx.textBaseline = 'top'
 
-    ctx.fillText(this.text, this.left, this.top)
+    const x = this.left + (this.padding?.left || 0)
+    const y = this.top + (this.padding?.top || 0)
+
+    ctx.fillText(this.text, x, y)
   }
 
   toXML() {

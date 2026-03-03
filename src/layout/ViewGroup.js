@@ -29,8 +29,15 @@ export class ViewGroup extends View {
 
   draw(ctx) {
     super.draw(ctx)
-
     this.children.forEach(child => {
+      const offsetL = this.left + (this.padding.left || 0)
+      const offsetT = this.top + (this.padding.top || 0)
+      child.layout(
+        offsetL + (child.left - child.left),
+        offsetT + (child.top - child.top),
+        offsetL + (child.left - child.left) + child.measuredWidth,
+        offsetT + (child.top - child.top) + child.measuredHeight
+      )
       child.draw(ctx)
     })
   }
