@@ -1,55 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Android XML Canvas Demo</title>
+  <meta charset="UTF-8" />
+  <title>Renderoid Engine Demo</title>
+
   <style>
-    body { font-family: sans-serif; }
-    canvas { border: 1px solid #333; display:block; margin: 20px auto; }
+    body {
+      margin: 0;
+      background: #f5f5f5;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 20px 0;
+    }
+
+    canvas {
+      background: white;
+      border: 1px solid #ccc;
+      display: block;
+      margin: 0 auto;
+    }
   </style>
 </head>
 <body>
-  <h1>Android XML Canvas Demo</h1>
-  <canvas id="app" width="400" height="400"></canvas>
+
+  <h1>Renderoid UI Engine</h1>
+  <canvas id="app" width="500" height="400"></canvas>
 
   <script type="module">
-    import { Engine, LinearLayout, TextView } from '../src/index.js'
+    import { Engine } from '../src/index.js'
 
     const canvas = document.getElementById('app')
     const engine = new Engine(canvas)
 
-    // XML-based example
     const xml = `
-<LinearLayout
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical">
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Hello XML!"
-    android:textColor="#ff0000"
-    android:fontSize="24"
-    android:margin="100"/>
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Second Line"
-    android:textColor="#0000ff"
-    android:fontSize="18"/>
-</LinearLayout>
-`
+      <LinearLayout orientation="vertical">
+        <TextView
+          text="Hello Renderoid!"
+          textColor="#ff0000"
+          fontSize="28" />
+
+        <TextView
+          text="Second Line"
+          textColor="#0000ff"
+          fontSize="20" />
+
+        <LinearLayout orientation="horizontal">
+          <TextView
+            text="Left"
+            textColor="green"
+            fontSize="18" />
+
+          <TextView
+            text="Right"
+            textColor="purple"
+            fontSize="18" />
+        </LinearLayout>
+
+      </LinearLayout>
+    `
 
     engine.renderXML(xml)
-
-    // Programmatic example (uncomment to test)
-    /*
-    const root = new LinearLayout({ orientation: 'vertical', layoutWidth: 'match_parent', layoutHeight: 'match_parent' })
-    root.addView(new TextView({ text: 'Hello Programmatic!', textColor: 'green', fontSize: 24 }))
-    root.addView(new TextView({ text: 'Second Line', textColor: 'purple', fontSize: 18 }))
-    engine.setRootView(root)
-    engine.render()
-    */
   </script>
+
 </body>
 </html>

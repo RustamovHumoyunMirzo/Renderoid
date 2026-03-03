@@ -1,10 +1,10 @@
-import { CanvasRenderer } from '../rendering/CanvasRenderer.js'
-import { inflateXMLString } from '../parser/LayoutInflater.js'
+import { inflateXMLString } from './XMLInflater.js'
 
 export class Engine {
+
   constructor(canvas) {
     this.canvas = canvas
-    this.renderer = new CanvasRenderer(canvas)
+    this.ctx = canvas.getContext('2d')
     this.rootView = null
   }
 
@@ -13,21 +13,22 @@ export class Engine {
   }
 
   render() {
-    if (!this.rootView) {
-      console.warn('No root view set')
-      return
-    }
-    this.renderer.render(this.rootView)
+    if (!this.rootView) return
+
+    this.rootView.measure({
+      width: this.canvas.width,
+      height: this.canvas.height
+    })
+
+    this.rootView.layout(0, 0)
+
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+    this.rootView.draw(this.ctx)
   }
 
   renderXML(xmlString) {
-    const view = inflateXMLString(xmlString)
-    this.setRootView(view)
+    this.rootView = inflateXMLString(xmlString)
     this.render()
-  }
-
-  exportXML() {
-    if (!this.rootView) return ''
-    return this.rootView.toXML()
   }
 }
