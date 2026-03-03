@@ -1,0 +1,23 @@
+{
+  "name": "renderoid",
+  "version": "1.0.0",
+  "description": "A lightweight web-based engine that parses and renders Android XML layouts, simulating Android’s layout rules and view hierarchy directly in the browser.",
+  "homepage": "https://github.com/RustamovHumoyunMirzo/Renderoid#readme",
+  "bugs": {
+    "url": "https://github.com/RustamovHumoyunMirzo/Renderoid/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RustamovHumoyunMirzo/Renderoid.git"
+  },
+  "license": "MIT",
+  "author": "Rustamov Humoyun Mirzo",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
+}
