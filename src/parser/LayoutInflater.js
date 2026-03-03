@@ -1,5 +1,6 @@
 import { LinearLayout } from '../layout/LinearLayout.js'
 import { TextView } from '../layout/TextView.js'
+import { ImageView } from '../layout/ImageView.js'
 import { parseXML } from './XMLParser.js'
 
 export function inflateXMLNode(node) {
@@ -28,6 +29,14 @@ export function inflateXMLNode(node) {
         text: attrs.text,
         textColor: attrs.textColor,
         fontSize: attrs.fontSize ? parseInt(attrs.fontSize) : undefined
+      })
+      break
+    case 'ImageView':
+      view = new ImageView({
+        layoutWidth: attrs.layout_width,
+        layoutHeight: attrs.layout_height,
+        src: attrs.src,
+        scaleType: attrs.scaleType
       })
       break
     default:
