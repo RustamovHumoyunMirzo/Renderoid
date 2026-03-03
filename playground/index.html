@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Android XML Canvas Demo</title>
+  <style>
+    body { font-family: sans-serif; }
+    canvas { border: 1px solid #333; display:block; margin: 20px auto; }
+  </style>
+</head>
+<body>
+  <h1>Android XML Canvas Demo</h1>
+  <canvas id="app" width="400" height="400"></canvas>
+
+  <script type="module">
+    import { Engine, LinearLayout, TextView } from '../src/index.js'
+
+    const canvas = document.getElementById('app')
+    const engine = new Engine(canvas)
+
+    // XML-based example
+    const xml = `
+<LinearLayout
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Hello XML!"
+    android:textColor="#ff0000"
+    android:fontSize="24"/>
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Second Line"
+    android:textColor="#0000ff"
+    android:fontSize="18"/>
+</LinearLayout>
+`
+
+    engine.renderXML(xml)
+
+    // Programmatic example (uncomment to test)
+    /*
+    const root = new LinearLayout({ orientation: 'vertical', layoutWidth: 'match_parent', layoutHeight: 'match_parent' })
+    root.addView(new TextView({ text: 'Hello Programmatic!', textColor: 'green', fontSize: 24 }))
+    root.addView(new TextView({ text: 'Second Line', textColor: 'purple', fontSize: 18 }))
+    engine.setRootView(root)
+    engine.render()
+    */
+  </script>
+</body>
+</html>
