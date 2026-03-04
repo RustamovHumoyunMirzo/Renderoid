@@ -1,4 +1,5 @@
 import { inflateXMLString } from './XMLInflater.js'
+import { makeMeasureSpec, MeasureMode } from './MeasureSpec.js'
 
 export class Engine {
 
@@ -13,16 +14,22 @@ export class Engine {
   }
 
   render() {
-    if (!this.rootView) return
 
-    this.rootView.measure({
-      width: this.canvas.width,
-      height: this.canvas.height
-    })
+    if (!this.rootView) {
+      throw new Error("RootView not set")
+    }
+
+    const width = this.canvas.width
+    const height = this.canvas.height
+
+    const widthSpec = makeMeasureSpec(width, MeasureMode.EXACT)
+    const heightSpec = makeMeasureSpec(height, MeasureMode.EXACT)
+
+    this.rootView.measure(widthSpec, heightSpec)
 
     this.rootView.layout(0, 0)
 
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    this.ctx.clearRect(0, 0, width, height)
 
     this.rootView.draw(this.ctx)
   }

@@ -17,11 +17,15 @@ export class TextView extends View {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
     ctx.font = `${this.fontSize}px sans-serif`
-
+    
     const metrics = ctx.measureText(this.text)
-
+    
     this.measuredWidth = metrics.width
-    this.measuredHeight = this.fontSize * 1.2
+    
+    const ascent = metrics.actualBoundingBoxAscent || this.fontSize
+    const descent = metrics.actualBoundingBoxDescent || 0
+    
+    this.measuredHeight = ascent + descent
   }
 
   onDraw(ctx) {
